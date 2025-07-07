@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - ConnectHub</title>
+    <style>
+        body {
+            font-family: var(--font-main);
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: var(--dark-color);
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .search-bar {
+            flex: 0.5;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            background-color: #f5f5f5;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .nav-links i {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .profile-header {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .cover-photo {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: flex-end;
+            margin-top: 100px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            object-fit: cover;
+            margin-right: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-details {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin: 0 0 10px;
+        }
+        
+        .profile-username {
+            color: #777;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .profile-bio {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-count {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .profile-content {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .profile-sidebar {
+            flex: 0.3;
+        }
+        
+        .profile-main {
+            flex: 0.7;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .about-item {
+            margin-bottom: 15px;
+        }
+        
+        .about-label {
+            font-weight: 600;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        
+        .about-value {
+            line-height: 1.5;
+        }
+        
+        .followers-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .follower {
+            text-align: center;
+        }
+        
+        .follower-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        
+        .follower-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .post {
+            margin-bottom: 30px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .post-user {
+            flex: 1;
+        }
+        
+        .post-name {
+            font-weight: 600;
+            margin: 0 0 5px;
+        }
+        
+        .post-time {
+            color: #777;
+            font-size: 0.8rem;
+        }
+        
+        .post-options {
+            color: #777;
+            cursor: pointer;
+        }
+        
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            max-height: 500px;
+            object-fit: cover;
+        }
+        
+        .post-actions {
+            display: flex;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        
+        .post-action {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            color: #777;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 5px 0;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+        
+        .post-action:hover {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+        }
+        
+        .post-comments {
+            margin-top: 15px;
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .comment-content {
+            flex: 1;
+            background-color: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 15px;
+        }
+        
+        .comment-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0 0 5px;
+        }
+        
+        .comment-text {
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .comment-time {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 5px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .comment-action {
+            color: #777;
+            cursor: pointer;
+        }
+        
+        .comment-form {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .comment-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+        
+        .comment-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .comment-submit:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: 120px;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .profile-actions {
+                justify-content: center;
+            }
+            
+            .profile-content {
+                flex-direction: column;
+            }
+            
+            .followers-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-bar {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">ConnectHub</a>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="nav-links">
+                <a href="#">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="#">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="active">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="cover-photo"></div>
+            <div class="profile-info">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Picture" class="profile-avatar">
+                <div class="profile-details">
+                    <h1 class="profile-name">John Doe</h1>
+                    <p class="profile-username">@johndoe</p>
+                    <p class="profile-bio">Digital creator | Photography enthusiast | Travel lover | Sharing my journey one post at a time</p>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-count">1,234</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-count">12.5k</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-count">543</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-primary">Follow</button>
+                    <button class="btn btn-outline">Message</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-content">
+            <div class="profile-sidebar">
+                <div class="card">
+                    <h2 class="card-title">About</h2>
+                    <div class="about-item">
+                        <div class="about-label">Location</div>
+                        <div class="about-value">San Francisco, CA</div>
+                    </div>
+                    <div class="about-item">
+                        <div class="about-label">Joined</div>
+                        <div class="about-value">January 2020</div>
+                    </div>
+                    <div class="about-item">
+                        <div class="about-label">Website</div>
+                        <div class="about-value">
+                            <a href="#" style="color: var(--primary-color); text-decoration: none;">johndoeportfolio.com</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Followers</h2>
+                    <div class="followers-list">
+                        <div class="follower">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Follower" class="follower-avatar">
+                            <div class="follower-name">Jane Smith</div>
+                        </div>
+                        <div class="follower">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Follower" class="follower-avatar">
+                            <div class="follower-name">Mike Johnson</div>
+                        </div>
+                        <div class="follower">
+                            <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Follower" class="follower-avatar">
+                            <div class="follower-name">Sarah Williams</div>
+                        </div>
+                        <div class="follower">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Follower" class="follower-avatar">
+                            <div class="follower-name">David Brown</div>
+                        </div>
+                        <div class="follower">
+                            <img src="https://randomuser.me/api/portraits/women/55.jpg" alt="Follower" class="follower-avatar">
+                            <div class="follower-name">Emily Davis</div>
+                        </div>
+                        <div class="follower">
+                            <img src="https://randomuser.me/api/portraits/men/66.jpg" alt="Follower" class="follower-avatar">
+                            <div class="follower-name">Robert Wilson</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-main">
+                <div class="card">
+                    <div class="post">
+                        <div class="post-header">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="post-avatar">
+                            <div class="post-user">
+                                <div class="post-name">John Doe</div>
+                                <div class="post-time">2 hours ago</div>
+                            </div>
+                            <div class="post-options">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            Just visited the most amazing place! The mountains were breathtaking and the air was so fresh. Can't wait to share more photos from my trip. #travel #adventure #mountains
+                        </div>
+                        <img src="https://source.unsplash.com/random/800x400/?mountain" alt="Post" class="post-image">
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-heart"></i>
+                                <span>Like</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i>
+                                <span>Comment</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="fas fa-share"></i>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                        <div class="post-comments">
+                            <div class="comment">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-name">Jane Smith</div>
+                                    <p class="comment-text">Wow, this looks incredible! Where exactly is this?</p>
+                                    <div class="comment-time">1 hour ago</div>
+                                    <div class="comment-actions">
+                                        <span class="comment-action">Like</span>
+                                        <span class="comment-action">Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment">
+                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-name">Mike Johnson</div>
+                                    <p class="comment-text">Amazing view! I've been there last summer, the hiking trails are fantastic.</p>
+                                    <div class="comment-time">45 minutes ago</div>
+                                    <div class="comment-actions">
+                                        <span class="comment-action">Like</span>
+                                        <span class="comment-action">Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="comment-form">
+                                <input type="text" placeholder="Write a comment..." class="comment-input">
+                                <button type="submit" class="comment-submit">Post</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="post">
+                        <div class="post-header">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="post-avatar">
+                            <div class="post-user">
+                                <div class="post-name">John Doe</div>
+                                <div class="post-time">1 day ago</div>
+                            </div>
+                            <div class="post-options">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            Working on a new project that I'm really excited about! It's going to combine my love for photography with my passion for storytelling. Stay tuned for updates! #creativity #photography #storytelling
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-heart"></i>
+                                <span>Like</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i>
+                                <span>Comment</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="fas fa-share"></i>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                        <div class="post-comments">
+                            <div class="comment">
+                                <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="User" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-name">Sarah Williams</div>
+                                    <p class="comment-text">Can't wait to see what you come up with! Your work is always inspiring.</p>
+                                    <div class="comment-time">20 hours ago</div>
+                                    <div class="comment-actions">
+                                        <span class="comment-action">Like</span>
+                                        <span class="comment-action">Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="comment-form">
+                                <input type="text" placeholder="Write a comment..." class="comment-input">
+                                <button type="submit" class="comment-submit">Post</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle like button
+        document.querySelectorAll('.post-action').forEach(action => {
+            action.addEventListener('click', function() {
+                if (this.querySelector('i').classList.contains('fa-heart')) {
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas', 'liked');
+                        this.style.color = 'var(--danger-color)';
+                    } else {
+                        icon.classList.remove('fas', 'liked');
+                        icon.classList.add('far');
+                        this.style.color = '';
+                    }
+                }
+            });
+        });
+        
+        // Toggle comment form visibility
+        document.querySelectorAll('.post-action').forEach(action => {
+            if (action.textContent.includes('Comment')) {
+                action.addEventListener('click', function() {
+                    const post = this.closest('.post');
+                    const comments = post.querySelector('.post-comments');
+                    comments.style.display = comments.style.display === 'none' ? 'block' : 'none';
+                });
+            }
+        });
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

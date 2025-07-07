@@ -1,0 +1,29 @@
+{
+  "name": "social_media",
+  "version": "1.0.0",
+  "description": "For project and for codeAlpha Intern",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robson120-s/Code_Alpha-Social-Media-Platform-.git"
+  },
+  "keywords": [
+    "social",
+    "media"
+  ],
+  "author": "Robson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robson120-s/Code_Alpha-Social-Media-Platform-/issues"
+  },
+  "homepage": "https://github.com/robson120-s/Code_Alpha-Social-Media-Platform-#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  }
+}
